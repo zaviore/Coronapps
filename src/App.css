@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+.Neumorp {
+  margin-top: 10px;
+  height: 170px;
+  border-radius: 37px;
+  background: #e6e6e6;
+  box-shadow: 6px 6px 12px #c4c4c4, -6px -6px 12px #ffffff;
+}
