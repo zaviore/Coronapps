@@ -1,4 +1,5 @@
 import { Jumbotron, Container, Row, Col, Card, Form } from "react-bootstrap";
+import Footer from "../component/footer";
 import World from "../images/world.png";
 import Virus from "../images/virus.png";
 import Notes from "../images/notes.png";
@@ -48,7 +49,10 @@ class Content extends React.Component {
     const { data, country } = this.state;
     console.log(data);
     return (
-      <Jumbotron fluid style={{ height: "100%" }}>
+      <Jumbotron
+        fluid
+        style={{ height: "100%", backgroundColor: "transparent" }}
+      >
         <Container style={{ width: "80%" }}>
           <Row>
             <Col md={10}>

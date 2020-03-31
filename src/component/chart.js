@@ -69,7 +69,7 @@ class Chart extends Component {
         <div className="chart">
           <Doughnut
             data={chartData}
-            width={500}
+            width={300}
             height={300}
             options={{
               title: {

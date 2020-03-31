@@ -19,6 +19,7 @@ class Content extends React.Component {
         <h4>Profile</h4>
         <p> Nama : Zamhadi</p>
         <button>Facebook</button>
+        <button>github</button>
       </Card>
     );
   }
