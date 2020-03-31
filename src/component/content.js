@@ -5,14 +5,51 @@ import Notes from "../images/notes.png";
 import Health from "../images/health.png";
 import Rip from "../images/rip.png";
 import Watch from "../images/watch.png";
+import Chart from "./chart";
 import React from "react";
 import "../App.css";
-
+import axios from "axios";
+import moment from "moment";
 class Content extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      iso3: null,
+      country: null,
+      data: null
+    };
+  }
+
+  getCountries = () => {
+    axios({
+      method: "get",
+      url: "https://covid19.mathdro.id/api/countries",
+      responseType: "json"
+    }).then(response => {
+      this.setState({ country: response.data.countries });
+    });
+  };
+
+  getConfirmed = value => {
+    axios({
+      method: "get",
+      url: "https://covid19.mathdro.id/api/countries/" + value,
+      responseType: "json"
+    }).then(response => {
+      this.setState({ data: response.data });
+    });
+  };
+
+  componentDidMount = async () => {
+    this.getCountries();
+    this.getConfirmed("AFG");
+  };
   render() {
+    const { data, country } = this.state;
+    console.log(data);
     return (
       <Jumbotron fluid style={{ height: "100%" }}>
-        <Container style={{ width: "70%" }}>
+        <Container style={{ width: "80%" }}>
           <Row>
             <Col md={10}>
               <h1>Mapping Corona Virus</h1>
@@ -40,9 +77,23 @@ class Content extends React.Component {
                   <h4>Country</h4>
 
                   <Form.Group as={Col} controlId="formGridState">
-                    <Form.Control as="select" value="Choose...">
-                      <option>Select Country</option>
-                      <option>...</option>
+                    <Form.Control
+                      as="select"
+                      value={this.state.iso3}
+                      onChange={e => {
+                        console.log(e.target.value);
+                        this.getConfirmed(e.target.value);
+                      }}
+                    >
+                      {country != null ? (
+                        country.map((item, index) => (
+                          <option key={index} value={item.iso3}>
+                            {item.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option>Loading</option>
+                      )}
                     </Form.Control>
                   </Form.Group>
                 </Card>
@@ -60,7 +111,7 @@ class Content extends React.Component {
                 >
                   <img style={{ width: "50px" }} src={Notes} />
                   <h4>Confirmed</h4>
-                  <p>0</p>
+                  <p>{data?.confirmed?.value}</p>
                 </Card>
               </Col>
               <Col md={4}>
@@ -82,7 +133,7 @@ class Content extends React.Component {
                       src={Health}
                     />
                     <h4>Recovery</h4>
-                    <p>0</p>
+                    <p>{data?.recovered?.value}</p>
                   </Card>
                 </div>
               </Col>
@@ -104,7 +155,7 @@ class Content extends React.Component {
                 >
                   <img style={{ width: "50px" }} src={Rip} />
                   <h4>Death</h4>
-                  <p>0</p>
+                  <p>{data?.deaths?.value}</p>
                 </Card>
               </Col>
               <Col md={4}>
@@ -126,7 +177,12 @@ class Content extends React.Component {
                       src={Watch}
                     />
                     <h4>Last Update</h4>
-                    <p>0</p>
+                    <p>
+                      {" "}
+                      {moment(data?.lastUpdate)
+                        .subtract(3, "days")
+                        .calendar()}
+                    </p>
                   </Card>
                 </div>
               </Col>
@@ -135,26 +191,7 @@ class Content extends React.Component {
           <Row>
             <Col style={{ padding: "20px" }}>
               {" "}
-              <Card
-                className="Neumorp"
-                style={{
-                  alignItems: "center",
-                  padding: "20px",
-                  borderRadius: "15px",
-                  backgroundColor: "#e6e6e6",
-                  border: "0px"
-                }}
-              >
-                <h4>World Data Corona</h4>
-                <img
-                  style={{
-                    width: "50px"
-                  }}
-                  src={Watch}
-                />
-
-                <p>0</p>
-              </Card>
+              <Chart legendPosition="bottom" />
             </Col>
           </Row>
         </Container>
