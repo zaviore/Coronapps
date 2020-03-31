@@ -1,5 +1,5 @@
 import { Navbar, FormControl, Button, Form, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Logo from "../images/logo.png";
 import React from "react";
 
@@ -13,13 +13,15 @@ class Navs extends React.Component {
             <img src={Logo} style={{ width: 40 }} />
           </Navbar.Brand>
           <Nav className="mr-auto"></Nav>
-          <Form inline>
-            <Link to="/About">
-              <Button variant="">
-                <b>About</b>
-              </Button>
-            </Link>
-          </Form>
+
+          {/* <Button variant=""> */}
+          <a
+            href="https://github.com/Zaviore"
+            style={{ borderInline: "none", color: "white" }}
+          >
+            About me
+          </a>
+          {/* </Button> */}
         </Navbar>
       </div>
     );
